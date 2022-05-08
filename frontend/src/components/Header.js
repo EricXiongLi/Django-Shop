@@ -40,7 +40,7 @@ function Header() {
                 </NavDropdown>
               ) : (
                 <Link to="/profile">
-                  <Nav.Link><i className="fas fa-user"></i> Login </Nav.Link>
+                  <Nav.Link><i className="fas fa-user"></i> profile </Nav.Link>
                 </Link>
               )}
 

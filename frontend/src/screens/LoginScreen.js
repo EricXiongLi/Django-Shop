@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {login} from "../actions/userActions";
 import FormContainer from "../components/FormContainer";
 
-const LoginScreen = ({}) => {
+const LoginScreen = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const dispatch = useDispatch()
