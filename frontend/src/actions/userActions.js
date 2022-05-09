@@ -1,4 +1,6 @@
 import {
+  USER_DETAILS_FAIL, USER_DETAILS_REQUEST,
+  USER_DETAILS_SUCCESS,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -25,7 +27,7 @@ export const login = (email, password) => async (dispatch) => {
   } catch(error) {
     dispatch({
       type: USER_LOGIN_FAIL,
-      payload: error.response && error.response.data ? error.response.data.detail : error.message,
+      payload: error.response && error.response.data.detail ? error.response.data.detail : error.message,
     })
   }
 }
@@ -59,3 +61,32 @@ export const register = (name, email, password) => async (dispatch) => {
     })
   }
 }
+
+export const getUserDetails = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type:USER_DETAILS_REQUEST
+    })
+
+    const {
+      userLogin: {userInfo}
+    } = getState()
+    const {data} = await axios.get(`http://127.0.0.1:8000/api/users/${id}/`,{
+      headers:{
+        'Content-type':'application/json',
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    })
+
+    dispatch({
+      type:USER_DETAILS_SUCCESS,
+      payload:data
+    })
+  } catch(error) {
+    dispatch({
+      type: USER_DETAILS_FAIL,
+      payload: error.response && error.response.data ? error.response.data.detail : error.message,
+    })
+  }
+}
+
