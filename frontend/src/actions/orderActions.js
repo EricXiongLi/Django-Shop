@@ -1,5 +1,8 @@
 import axios from "axios";
-import {ORDER_CREATE_FAIL, ORDER_CREATE_REQUEST, ORDER_CREATE_SUCCESS} from "../constants/orderConstants";
+import {
+	ORDER_CREATE_FAIL, ORDER_CREATE_REQUEST, ORDER_CREATE_SUCCESS, ORDER_DETAILS_FAIL,
+	ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS
+} from "../constants/orderConstants";
 import {CART_CLEAE_ITEMS} from "../constants/cartConstants";
 
 
@@ -35,6 +38,36 @@ export const createOrder = (order) => async (dispatch, getState) => {
 	} catch (error) {
 		dispatch({
 			type: ORDER_CREATE_FAIL,
+			payload: error.response && error.response.data ? error.response.data.detail : error.message,
+		})
+	}
+}
+
+export const getOrderDetails = (id) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: ORDER_DETAILS_REQUEST
+		})
+
+		const {
+			userLogin: {userInfo}
+		} = getState()
+
+		const {data} = await axios.get(`http://127.0.0.1:8000/api/orders/${id}`, {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: `Bearer ${userInfo.token}`
+			}
+		})
+
+		dispatch({
+			type: ORDER_DETAILS_SUCCESS,
+			payload: data
+		})
+
+	} catch (error) {
+		dispatch({
+			type: ORDER_DETAILS_FAIL,
 			payload: error.response && error.response.data ? error.response.data.detail : error.message,
 		})
 	}
