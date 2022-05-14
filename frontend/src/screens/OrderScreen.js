@@ -5,6 +5,9 @@ import {Card, Col, Image, ListGroup, Row} from "react-bootstrap";
 import Message from "../components/Message";
 import {getOrderDetails, payOrder} from "../actions/orderActions";
 import Loader from "../components/Loader";
+import {PayPalButton} from "react-paypal-button-v2";
+import {ORDER_PAY_RESET} from "../constants/orderConstants";
+
 
 const OrderScreen = () => {
 	const dispatch = useDispatch()
@@ -12,13 +15,13 @@ const OrderScreen = () => {
 	const params = useParams()
 	const orderId = params.id
 
-	const[sdkReady, setSdkReady] = useState(false)
+	const [sdkReady, setSdkReady] = useState(false)
 
 	const orderDetails = useSelector(state => state.orderDetails)
 	const {order, error, loading} = orderDetails
 
 	const orderPay = useSelector(state => state.orderPay)
-	const {loading: loadingPay, success:successPay} = orderPay
+	const {loading: loadingPay, success: successPay} = orderPay
 
 	if (!loading && !error) {
 		order.itemsPrice = order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
@@ -38,10 +41,13 @@ const OrderScreen = () => {
 
 	useEffect(() => {
 		if (!order || successPay || order._id !== Number(orderId)) {
+			dispatch({
+				type:ORDER_PAY_RESET
+			})
 			dispatch(getOrderDetails(orderId))
-		} else if (!order.isPaid){
+		} else if (!order.isPaid) {
 			if (!window.paypal) {
-				// addPayPalScript()
+				addPayPalScript()
 			} else {
 				setSdkReady(true)
 			}
@@ -155,6 +161,13 @@ const OrderScreen = () => {
 									<Col>${order.totalPrice}</Col>
 								</Row>
 							</ListGroup.Item>
+
+							{!order.isPaid && (
+								<ListGroup.Item>
+									{loadingPay && <Loader/>}
+									{!sdkReady ? <Loader/> : <PayPalButton amount={order.totalPrice} onSuccess={successPaymentHandler}/>}
+								</ListGroup.Item>
+							)}
 
 						</ListGroup>
 					</Card>
