@@ -24,24 +24,26 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return data
 
+
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
 
 @api_view(['POST'])
 def registerUser(request):
     data = request.data
     try:
-         user = User.objects.create(
-                first_name = data['name'],
-                username = data['email'],
-                email = data['email'],
-                password = make_password(data['password'])
-            )
-         serializer = UserSerializerWithToken(user, many=False)
-         return Response(serializer.data)
+        user = User.objects.create(
+            first_name=data['name'],
+            username=data['email'],
+            email=data['email'],
+            password=make_password(data['password'])
+        )
+        serializer = UserSerializerWithToken(user, many=False)
+        return Response(serializer.data)
     except:
-        message = {'detail' : 'User with this email already exists'}
-        return Response(message, status = status.HTTP_400_BAD_REQUEST)
+        message = {'detail': 'User with this email already exists'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['PUT'])
@@ -60,6 +62,7 @@ def updateUserProfile(request):
     user.save()
     return Response(serializer.data)
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getUserProfile(request):
@@ -72,19 +75,13 @@ def getUserProfile(request):
 @permission_classes([IsAdminUser])
 def getUsers(request):
     users = User.objects.all()
-    serializer = UserSerializer(users, many = True)
+    serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
+
+@api_view(['DELETE'])
 @permission_classes([IsAdminUser])
-def getUsers(request):
-    users = User.objects.all()
-    serializer = UserSerializer(users, many = True)
-    return Response(serializer.data)
-
-
-# @permission_classes([IsAdminUser])
-# def getUsers(request):
-#     users = User.objects.all()
-#     serializer = UserSerializer(users, many = True)
-#     return Response(serializer.data)
+def deleteUser(request, pk):
+    userForDeletion = User.objects.get(id=pk)
+    userForDeletion.delete()
+    return Response("user was deleted")
