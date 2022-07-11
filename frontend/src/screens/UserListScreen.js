@@ -62,7 +62,7 @@ const UserListScreen = () => {
 							<td>{user.email}</td>
 							<td>{user.isAdmin ? <AiOutlineCheck color="green"/> : <AiOutlineCheck color="red"/>}</td>
 							<td>
-								<Link to={`/admin/user/${user._id}`}>
+								<Link to={`/admin/user/${user._id}/edit`}>
 									<Button variant="light" className="btn-sm">
 										<AiOutlineEdit size="20"/>
 									</Button>
@@ -72,7 +72,7 @@ const UserListScreen = () => {
 								</Button>
 							</td>
 						</tr>))}
-					< /tbody>
+					</tbody>
 				</Table>}
 		</div>
 	);
