@@ -1,13 +1,21 @@
 import axios from "axios";
 import React from "react";
-import {useEffect} from "react";
-import {useState} from "react";
-import {Button, Card, Col, Form, Image, ListGroup, Row} from "react-bootstrap";
-import {useSelector} from "react-redux";
-import {useDispatch} from "react-redux";
-import {useNavigate, useParams} from "react-router-dom";
-import {Link} from "react-router-dom";
-import {listProductDetails} from "../actions/productActions";
+import { useEffect } from "react";
+import { useState } from "react";
+import {
+  Button,
+  Card,
+  Col,
+  Form,
+  Image,
+  ListGroup,
+  Row,
+} from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { listProductDetails } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Rating from "../components/Rating";
@@ -19,15 +27,15 @@ function ProductScreen() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
-  const {loading, error, product} = productDetails;
+  const { loading, error, product } = productDetails;
 
   useEffect(() => {
     dispatch(listProductDetails(params.id));
   }, [dispatch]);
 
   const addToCardHandler = () => {
-    navigate(`/cart/${params.id}/?qty=${qty}`)
-  }
+    navigate(`/cart/${params.id}/?qty=${qty}`);
+  };
 
   return (
     <div>
@@ -35,13 +43,13 @@ function ProductScreen() {
         Go back
       </Link>
       {loading ? (
-        <Loader/>
+        <Loader />
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
         <Row>
           <Col md={6}>
-            <Image src={product.image} alt={product.name} fluid/>
+            <Image src={product.image} alt={product.name} fluid />
           </Col>
 
           <Col md={3}>
@@ -92,14 +100,18 @@ function ProductScreen() {
                       <Row>
                         <Col>Qty</Col>
                         <Col xs="auto" className="my-1">
-                          <Form.Control as="select" value={qty} onChange={(e) => setQty(e.target.value)}>
-                            {
-                              [...Array(product.countInStock).keys()].map((x) => (
+                          <Form.Control
+                            as="select"
+                            value={qty}
+                            onChange={(e) => setQty(e.target.value)}
+                          >
+                            {[...Array(product.countInStock).keys()].map(
+                              (x) => (
                                 <option key={x + 1} value={x + 1}>
                                   {x + 1}
                                 </option>
-                              ))
-                            }
+                              )
+                            )}
                           </Form.Control>
                         </Col>
                       </Row>
