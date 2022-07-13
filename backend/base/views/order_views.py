@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render
 
 from rest_framework.decorators import api_view, permission_classes
@@ -91,12 +93,22 @@ def getOrderById(request, pk):
             'detail': 'Order doest not exist'
         }, status = HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
+@api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def updateOrderToPaid(request, pk):
     order = Order.objects.get(_id=pk)
     order.isPaid = True
-    order.paidAt = datatime.now()
+    order.paidAt = datetime.now()
+    order.save()
+    return Response('Order was paid')
+
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def updateOrderToDelivered(request, pk):
+    order = Order.objects.get(_id=pk)
+    order.isDelivered = True
+    order.deliveredAt = datetime.now()
     order.save()
     return Response('Order was paid')
 
