@@ -10,11 +10,13 @@ from base.serializers import ProductSerializer
 
 from rest_framework import status
 
+
 @api_view(['GET'])
 def getProducts(request):
     products = Product.objects.all()
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 def getProduct(request, pk):
@@ -22,21 +24,25 @@ def getProduct(request, pk):
     serializer = ProductSerializer(product, many=False)
     return Response(serializer.data)
 
+
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
 def createProduct(request):
     user = request.user
+
     product = Product.objects.create(
         user=user,
-        name="Sample name",
+        name='Sample Name',
         price=0,
-        brand="Smaple brand",
+        brand='Sample Brand',
         countInStock=0,
-        category="Sample category",
-        description=""
+        category='Sample Category',
+        description=''
     )
+
     serializer = ProductSerializer(product, many=False)
     return Response(serializer.data)
+
 
 @api_view(['PUT'])
 @permission_classes([IsAdminUser])
@@ -54,6 +60,7 @@ def updateProduct(request, pk):
 
     serializer = ProductSerializer(product, many=False)
     return Response(serializer.data)
+
 
 @api_view(['DELETE'])
 @permission_classes([IsAdminUser])
