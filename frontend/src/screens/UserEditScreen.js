@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getUserDetails, updateUser } from "../actions/userActions";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {getUserDetails, updateUser} from "../actions/userActions";
 import FormContainer from "../components/FormContainer";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { Button, Col, Form, Row } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import { USER_UPDATE_RESET } from "../constants/userConstants";
+import {Button, Form} from "react-bootstrap";
+import {useNavigate, useParams} from "react-router-dom";
+import {USER_UPDATE_RESET} from "../constants/userConstants";
 
 const UserEditScreen = () => {
-  // const userId = match.params.id;
-  const { id: userId } = useParams();
+  const {id: userId} = useParams();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
@@ -24,7 +22,7 @@ const UserEditScreen = () => {
     : "/";
 
   const userDetails = useSelector((state) => state.userDetails);
-  const { error, loading, user } = userDetails;
+  const {error, loading, user} = userDetails;
 
   const userUpdate = useSelector((state) => state.userUpdate);
   const {
@@ -35,7 +33,7 @@ const UserEditScreen = () => {
 
   useEffect(() => {
     if (successUpdate) {
-      dispatch({ type: USER_UPDATE_RESET });
+      dispatch({type: USER_UPDATE_RESET});
       navigate("/admin/userlist");
     } else {
       if (!user.name || user._id !== Number(userId)) {
@@ -67,7 +65,7 @@ const UserEditScreen = () => {
         {loadingUpdate && <Loader/>}
         {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
         {loading ? (
-          <Loader />
+          <Loader/>
         ) : error ? (
           <Message variant="danger">{error}</Message>
         ) : (
