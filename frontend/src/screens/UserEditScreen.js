@@ -17,10 +17,6 @@ const UserEditScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const redirect = window.location.search
-    ? window.location.search.split("=")[1]
-    : "/";
-
   const userDetails = useSelector((state) => state.userDetails);
   const {error, loading, user} = userDetails;
 
@@ -44,7 +40,7 @@ const UserEditScreen = () => {
         setIsAdmin(user.isAdmin);
       }
     }
-  }, [user, userId, successUpdate, navigate]);
+  }, [user, userId, successUpdate, navigate, dispatch]);
 
   const submitHandler = (e) => {
     e.preventDefault();

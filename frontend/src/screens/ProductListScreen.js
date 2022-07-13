@@ -1,13 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {deleteUser, listUsers} from "../actions/userActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import {Button, Table, Row, Col} from "react-bootstrap";
-import {AiOutlineCheck, AiOutlineEdit} from "react-icons/ai"
+import {Button, Col, Row, Table} from "react-bootstrap";
+import {AiOutlineEdit} from "react-icons/ai"
 import {BsFillTrashFill} from "react-icons/bs"
 import {Link, useNavigate} from "react-router-dom";
-import {listProducts, deleteProduct, createProduct} from "../actions/productActions";
+import {createProduct, deleteProduct, listProducts} from "../actions/productActions";
 import {PRODUCT_CREATE_RESET} from "../constants/productConstants";
 
 

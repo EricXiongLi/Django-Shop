@@ -58,7 +58,7 @@ function Header() {
 									<NavDropdown.Item onClick={() => navigate("/admin/productlist")}>
 										Products
 									</NavDropdown.Item>
-									<NavDropdown.Item onClick={() => navigate("/admin/orderslist")}>
+									<NavDropdown.Item onClick={() => navigate("/admin/orderlist")}>
 										Orders
 									</NavDropdown.Item>
 								</NavDropdown>
